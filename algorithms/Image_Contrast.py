@@ -2,7 +2,6 @@ import requests
 import base64
 import json
 
-
 def Get_API():  # 取得API
 
     client_id = 'yumZRsADUevI5s0rgPnac0MW'
@@ -43,6 +42,3 @@ def Image_contrast(img1, img2):  # 图片对比
         print('二人相似度得分为 %s, 是同一人的可能性极大' % str(score))
     else:
         print('二人相似度得分为 %s, 不是同一人的可能性极大' % str(score))
-
-
-Image_contrast("eee.jpg", "eee.jpg")
