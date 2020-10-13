@@ -18,7 +18,6 @@ def Get_API():  # 取得API
 
 
 def Image_coding(img1, img2):  # 将图片转化为BASE64格式
-
     f = open(r'%s' % img1, 'rb')
     pic1 = base64.b64encode(f.read())
     f.close()
@@ -31,14 +30,18 @@ def Image_coding(img1, img2):  # 将图片转化为BASE64格式
     return params
 
 
+
 def Image_contrast(img1, img2):  # 图片对比
 
     API = Get_API()
-    params = Image_coding(img1, img2)
-    content = requests.post(API, params).text
-    score = eval(content)['result']['score']
+    if(img1 is not '' and img2 is not ''):
+        params = Image_coding(img1, img2)
+        content = requests.post(API, params).text
+        score = eval(content)['result']['score']
 
-    if score >= 60:  # Set the threshold
-        print('二人相似度得分为 %s, 是同一人的可能性极大' % str(score))
+        if score >= 60:  # Set the threshold
+            return '二人相似度得分为 %s' % str(score)
+        else:
+            return '二人相似度得分为 %s' % str(score)
     else:
-        print('二人相似度得分为 %s, 不是同一人的可能性极大' % str(score))
+        return '请选择图片'
