@@ -10,19 +10,16 @@
 
 import sys
 sys.path.append('D:\Github Projects\ProgrammingHomework')
-import sys
 from PyQt5 import QtCore
-
+import random
 import cv2
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QImage
 
-from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QLabel
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QPushButton,QFileDialog
-
 from algorithms.FaceComparsion import FaceComparsion
+
 
 def getCameraNum():
     """获取摄像头数量"""
@@ -39,7 +36,7 @@ class FrameThread(QThread):
     imgLab = None
     device = None
     paizhao = 0
-
+    img2=''
     """摄像头拍照线程，摄像头拍照耗时较长容易卡住UI"""
     def __init__(self,deviceIndex,imgLab):
         QThread.__init__(self)
@@ -62,10 +59,11 @@ class FrameThread(QThread):
                     # 转为QImage对象
                     image = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
                     if self.paizhao == 1:
-                        image.save("C:\\img"+str(self.deviceIndex)+".jpg")
+                        self.img2="D:\\img"+str(random.randint(0, 1000))+".jpg"
+                        image.save(self.img2)
                         self.paizhao = 0
                     pixmap = QPixmap.fromImage(image)
-                    pixmap = pixmap.scaled(400, 300, QtCore.Qt.KeepAspectRatio)
+                    pixmap = pixmap.scaled(self.imgLab.width(), self.imgLab.height(), QtCore.Qt.KeepAspectRatio)
                     self.imgLab.setPixmap(pixmap)
             finally:
                 self.device.release()
@@ -85,7 +83,7 @@ class FrameThread(QThread):
     def destroyed(self, QObject=None):
         self.device.release()
 
-class Ui_Dialog(QtWidgets.QWidget):
+class Ui_Dialog(object):
     img=''
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -120,18 +118,23 @@ class Ui_Dialog(QtWidgets.QWidget):
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
-        self.pushButton_2.clicked.connect(self.openimage)
+        self.pushButton_2.clicked.connect(self.paizhao)
         self.pushButton.clicked.connect(lambda: self.face(self.img))
+        
+        self.frameThread = FrameThread(0,self.label_2)
+        self.frameThread.start()
+        
+        self.frameThread2 = FrameThread(1,self.label)
+        self.frameThread2.start()
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
         
-    def openimage(self):
-        imgName, imgType = QFileDialog.getOpenFileName(self, "打开图片", "", "*.jpg;;*.png;;All Files(*)")
-        jpg = QtGui.QPixmap(imgName).scaled(self.label_2.width(), self.label_2.height())
-        self.label_2.setPixmap(jpg)
-        self.img = imgName
+    def paizhao(self):
+        self.img=self.frameThread.img2
+        self.frameThread.paizhao = 1
+        self.frameThread2.paizhao = 1
     
     
     def face(self,img):
