@@ -19,3 +19,4 @@ client_secret = 'ZrUNa8xMiC6M9OkyX0pIBHl4648WEXsL'
 ### 全部功能已完成
 但貌似还需要一个拍照功能，已经copy了一份别人写的函数。  
 数据库的Group_id为DEMO。
+### 照相功能实现
