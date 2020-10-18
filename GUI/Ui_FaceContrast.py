@@ -1,7 +1,7 @@
 import sys
 sys.path.append('D:\Github Projects\ProgrammingHomework')
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow
+from PyQt5.QtWidgets import QFileDialog
 from algorithms.Image_Contrast import Image_contrast
 
 class Ui_Dialog(QtWidgets.QWidget):
