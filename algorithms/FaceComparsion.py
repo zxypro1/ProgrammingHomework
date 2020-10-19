@@ -33,13 +33,18 @@ def FaceComparsion(img):  # 在数据库中搜索照片
     if(img is not ''):
         params=Image_coding(img)
         content = requests.post(API, params).text
-        score=eval(content)['result']['user_list'][0]['score']
-        if score >= 80:
-            to=eval(content)['result']['face_token']
-            uid=eval(content)['result']['user_list'][0]['user_id']
-            gid=eval(content)['result']['user_list'][0]['group_id']
-            return '找到相匹配的人脸！\n用户id为:%s\n所在组的id为:%s\n相似度为:%s' % (str(uid),str(gid),str(score))
-        else:
-            return '未能找到相匹配的人脸'
+        try:
+            score=eval(content)['result']['user_list'][0]['score']
+            if score >= 80 and score is not 'null':
+                to=eval(content)['result']['face_token']
+                uid=eval(content)['result']['user_list'][0]['user_id']
+                gid=eval(content)['result']['user_list'][0]['group_id']
+                return '找到相匹配的人脸！\n用户id为:%s\n所在组的id为:%s\n相似度为:%s' % (str(uid),str(gid),str(score))
+            else:
+                return '未能找到相匹配的人脸'
+        except IOError:
+            return '未能写入文件'
+        except NameError:
+            return '未找到人脸'
     else:
         return '请选择人脸'

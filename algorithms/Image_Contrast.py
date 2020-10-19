@@ -37,11 +37,15 @@ def Image_contrast(img1, img2):  # 图片对比
     if(img1 is not '' and img2 is not ''):
         params = Image_coding(img1, img2)
         content = requests.post(API, params).text
-        score = eval(content)['result']['score']
-
-        if score >= 60:  # Set the threshold
-            return '二人相似度得分为 %s' % str(score)
-        else:
-            return '二人相似度得分为 %s' % str(score)
+        try:
+            score = eval(content)['result']['score']
+            if score >= 60:  # Set the threshold
+                return '二人相似度得分为 %s' % str(score)
+            else:
+                return '二人相似度得分为 %s' % str(score)
+        except IOError:
+            return '未能写入文件'
+        except NameError:
+            return '未找到人脸'
     else:
         return '请选择图片'

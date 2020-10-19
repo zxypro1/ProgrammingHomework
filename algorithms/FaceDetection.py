@@ -33,13 +33,18 @@ def FaceDetection(img):#Demo
     if(img is not ''):
         params=Image_coding(img)
         content = requests.post(API, params).text
-        num=eval(content)['result']['face_num']
-        age=eval(content)['result']['face_list'][0]['age']
-        beau=eval(content)['result']['face_list'][0]['beauty']
-        faceshape=eval(content)['result']['face_list'][0]['face_shape']['type']
-        gender=eval(content)['result']['face_list'][0]['gender']['type']
-        glasses=eval(content)['result']['face_list'][0]['glasses']['type']
-        #print eval(content)['result']
-        return '图中有%s张脸，\n年龄为%s,\n美貌分数为%s,\n脸型为%s,\n性别为%s,\n眼镜是否戴上: %s' % (str(num),str(age),str(beau),str(faceshape),str(gender),str(glasses))
+        try:
+            num=eval(content)['result']['face_num']
+            age=eval(content)['result']['face_list'][0]['age']
+            beau=eval(content)['result']['face_list'][0]['beauty']
+            faceshape=eval(content)['result']['face_list'][0]['face_shape']['type']
+            gender=eval(content)['result']['face_list'][0]['gender']['type']
+            glasses=eval(content)['result']['face_list'][0]['glasses']['type']
+            #print eval(content)['result']
+            return '图中有%s张脸，\n年龄为%s,\n美貌分数为%s,\n脸型为%s,\n性别为%s,\n眼镜是否戴上: %s' % (str(num),str(age),str(beau),str(faceshape),str(gender),str(glasses))
+        except IOError:
+            return '未能写入文件'
+        except NameError:
+            return '未找到人脸'
     else:
         return '请输入照片'

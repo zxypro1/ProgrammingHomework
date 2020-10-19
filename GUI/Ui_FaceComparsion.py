@@ -46,6 +46,9 @@ class FrameThread(QThread):
         self.device = cv2.VideoCapture(self.deviceIndex)  # 从摄像头中取得视频
         self.device.set(cv2.CAP_PROP_FRAME_WIDTH, 1600)
         self.device.set(cv2.CAP_PROP_FRAME_HEIGHT, 1200)
+        
+    def ReturnPath(self):
+        return self.img2
 
     def run(self):
         if self.device.isOpened():
@@ -65,6 +68,8 @@ class FrameThread(QThread):
                     pixmap = QPixmap.fromImage(image)
                     pixmap = pixmap.scaled(self.imgLab.width(), self.imgLab.height(), QtCore.Qt.KeepAspectRatio)
                     self.imgLab.setPixmap(pixmap)
+            except RuntimeError:
+                self.device.release()    
             finally:
                 self.device.release()
         # if self.cap.isOpened():
@@ -132,8 +137,8 @@ class Ui_Dialog(object):
         
         
     def paizhao(self):
-        self.img=self.frameThread.img2
         self.frameThread.paizhao = 1
+        self.img=self.frameThread.ReturnPath()
         self.frameThread2.paizhao = 1
     
     

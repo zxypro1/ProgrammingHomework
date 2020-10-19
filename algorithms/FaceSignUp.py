@@ -33,10 +33,15 @@ def FaceSignUp(img,str1):  # 在数据库中搜索照片
     if(img is not '' and str1 is not ''):
         params=Image_coding(img,str1)
         content = requests.post(API, params).text
-        token=eval(content)['result']['face_token']
-        if token is not '':
-            return '上传成功！'
-        else:
-            return '上传失败！'
+        try:
+            token=eval(content)['result']['face_token']
+            if token is not '':
+                return '上传成功！'
+            else:
+                return '上传失败！'
+        except IOError:
+            return '未能写入文件'
+        except NameError:
+            return '未找到人脸'
     else:
         return '请选择人脸或输入名字！'
