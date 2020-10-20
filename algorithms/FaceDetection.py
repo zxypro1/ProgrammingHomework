@@ -1,7 +1,7 @@
 import requests
 import base64
 import json
-
+#此文件为图像分析功能的算法文件
 
 def Get_API():  # 取得API
 
@@ -32,8 +32,8 @@ def FaceDetection(img):#Demo
     API=Get_API()
     if(img is not ''):
         params=Image_coding(img)
-        content = requests.post(API, params).text
-        try:
+        content = requests.post(API, params).text#发送到云
+        try:#异常处理
             num=eval(content)['result']['face_num']
             age=eval(content)['result']['face_list'][0]['age']
             beau=eval(content)['result']['face_list'][0]['beauty']

@@ -1,7 +1,7 @@
 import requests
 import base64
 import json
-
+#此文件为人脸检索功能的算法文件
 def Get_API():  # 取得API
 
     client_id = 'yumZRsADUevI5s0rgPnac0MW'
@@ -33,10 +33,9 @@ def FaceComparsion(img):  # 在数据库中搜索照片
     if(img is not ''):
         params=Image_coding(img)
         content = requests.post(API, params).text
-        try:
+        try:#异常处理
             score=eval(content)['result']['user_list'][0]['score']
-            if score >= 80 and score is not 'null':
-                to=eval(content)['result']['face_token']
+            if score >= 80 and score is not 'null': #80分以上就视作匹配成功
                 uid=eval(content)['result']['user_list'][0]['user_id']
                 gid=eval(content)['result']['user_list'][0]['group_id']
                 return '找到相匹配的人脸！\n用户id为:%s\n所在组的id为:%s\n相似度为:%s' % (str(uid),str(gid),str(score))

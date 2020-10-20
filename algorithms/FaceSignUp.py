@@ -1,7 +1,7 @@
 import requests
 import base64
 import json
-
+#此文件是录入人脸信息的算法文件
 def Get_API():  # 取得API
 
     client_id = 'yumZRsADUevI5s0rgPnac0MW'
@@ -30,10 +30,10 @@ def Image_coding(img,str1):  # 将图片转化为BASE64格式
 
 def FaceSignUp(img,str1):  # 在数据库中搜索照片
     API = Get_API()
-    if(img is not '' and str1 is not ''):
+    if(img is not '' and str1 is not ''):#均有输入
         params=Image_coding(img,str1)
         content = requests.post(API, params).text
-        try:
+        try:#异常处理
             token=eval(content)['result']['face_token']
             if token is not '':
                 return '上传成功！'

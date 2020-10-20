@@ -1,3 +1,4 @@
+#此页面为人脸对比功能的UI
 import sys
 sys.path.append('D:\Github Projects\ProgrammingHomework')
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -28,28 +29,29 @@ class Ui_Dialog(QtWidgets.QWidget):
         self.pushButton_3 = QtWidgets.QPushButton(Dialog)
         self.pushButton_3.setGeometry(QtCore.QRect(460, 210, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_2.clicked.connect(self.openimage1)
-        self.pushButton_3.clicked.connect(self.openimage2)
-        self.pushButton.clicked.connect(lambda:self.face(self.img1,self.img2))
+        #点击时的操作
+        self.pushButton_2.clicked.connect(self.openimage1)#选择文件
+        self.pushButton_3.clicked.connect(self.openimage2)#选择文件
+        self.pushButton.clicked.connect(lambda:self.face(self.img1,self.img2))#运行face
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
         
-    def openimage1(self):
+    def openimage1(self):#开启一个选择文件的窗口
         imgName, imgType = QFileDialog.getOpenFileName(self, "打开图片", "", "*.jpg;;*.png;;All Files(*)")
         jpg = QtGui.QPixmap(imgName).scaled(self.label_2.width(), self.label_2.height())
-        self.label_2.setPixmap(jpg)
+        self.label_2.setPixmap(jpg)#显示已选文件
         self.img1 = imgName
         
         
-    def openimage2(self):
+    def openimage2(self):#开启一个选择文件的窗口
         imgName, imgType = QFileDialog.getOpenFileName(self, "打开图片", "", "*.jpg;;*.png;;All Files(*)")
         jpg = QtGui.QPixmap(imgName).scaled(self.label_3.width(), self.label_3.height())
-        self.label_3.setPixmap(jpg)
+        self.label_3.setPixmap(jpg)#显示已选文件
         self.img2 = imgName
     
-    def face(self,img1,img2):
+    def face(self,img1,img2):#获取从后端返回的信息并显示
         self.label.setText(Image_contrast(img1,img2))
 
 
